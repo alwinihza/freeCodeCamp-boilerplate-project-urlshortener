@@ -14,13 +14,25 @@ app.use('/public', express.static(`${process.cwd()}/public`));
 
 var shorten_url_map = [];
 
+function validURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
 app.post('/api/shorturl', function(req, res){
-  shorten_url_map.push(String(req.body.url));
-  console.log(shorten_url_map);
+  if(!validURL(String(req.body.url)))
+    res.json({error : "invalid url"});
+  if (shorten_url_map.indexOf(String(req.body.url)) != -1 )
+    shorten_url_map.push(String(req.body.url));
   res.json({original_url: String(req.body.url), short_url: shorten_url_map.indexOf(String(req.body.url))});
 });
 
