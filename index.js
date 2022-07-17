@@ -32,14 +32,15 @@ app.get('/', function(req, res) {
 app.post('/api/shorturl', function(req, res){
   dns.lookup(String(req.body.url), (err, address)=>{
     if (err) res.json({error: "invalid url"});
-    if (shorten_url_map.indexOf(String(req.body.url)) == -1 )
-      shorten_url_map.push(String(req.body.url));
-    res.json({original_url: String(req.body.url), short_url: shorten_url_map.indexOf(String(req.body.url))});
+    if (shorten_url_map.indexOf(address) == -1 )
+      shorten_url_map.push(String(address));
+    res.json({original_url: String(req.body.url), short_url: shorten_url_map.indexOf(String(address))});
   });
 });
 
 app.get('/api/shorturl/:shorturl', function(req, res) {
-  res.redirect(shorten_url_map[req.params.shorturl]);
+  // res.redirect(shorten_url_map[req.params.shorturl]);
+  res.redirect(301,'http://google.com');
 });
 
 app.listen(port, function() {
