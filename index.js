@@ -24,7 +24,7 @@ app.post('/api/shorturl', function(req, res){
   res.json({original_url: String(req.body.url), short_url: shorten_url_map.indexOf(String(req.body.url))});
 });
 
-app.get('/api/:shorturl', function(req, res) {
+app.get('/api/shorturl/:shorturl', function(req, res) {
   res.redirect(shorten_url_map[req.params.shorturl]);
 });
 
