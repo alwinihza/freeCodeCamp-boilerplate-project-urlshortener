@@ -39,8 +39,8 @@ app.post('/api/shorturl', function(req, res){
 });
 
 app.get('/api/shorturl/:shorturl', function(req, res) {
-  // res.redirect(shorten_url_map[req.params.shorturl]);
-  res.redirect(301,'http://google.com');
+  res.redirect(301,shorten_url_map[req.params.shorturl]);
+  // res.redirect(301,'http://google.com');
 });
 
 app.listen(port, function() {
